@@ -7,15 +7,33 @@
 <!-- START SNIPPET: xworkSample -->
 <struts>
 
-    <package name="default" extends="struts-default">
-    	<action name="hello" class="org.fkjava.ec.commons.action.HelloAction">
-    		<result>/WEB-INF/views/hello.jsp</result>
-    	</action>
-    	
-    	<action name="registerForm">
-    		<result>/WEB-INF/views/register.jsp</result>
-    	</action>
-    </package>
+	<package name="default" extends="struts-default">
+		<!-- <action name="hello" class="org.fkjava.ec.commons.action.HelloAction"> -->
+		<!-- <result>/WEB-INF/views/hello.jsp</result> -->
+		<!-- </action> -->
+
+		<action name="prompt">
+			<result>/WEB-INF/views/prompt.jsp</result>
+		</action>
+	</package>
+
+	<package name="identity" namespace="/identity"
+		extends="default">
+
+		<action name="registerForm">
+			<result>/WEB-INF/views/identity/register.jsp</result>
+		</action>
+
+		<!-- 处理注册请求的Action -->
+		<action name="register"
+			class="org.fkjava.ec.identity.action.RegisterAction">
+			<!-- 注册成功以后，跳转到提示页面 -->
+			<result type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">prompt</param>
+			</result>
+		</action>
+	</package>
 
 </struts>
 

@@ -13,6 +13,16 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 
+	<!-- 提交事务、关闭SqlSession的过滤器要放到Struts的过滤器之前 -->
+	<filter>
+		<filter-name>CommitAndCloseSqlSessionFilter</filter-name>
+		<filter-class>org.fkjava.ec.commons.filter.CommitAndCloseSqlSessionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CommitAndCloseSqlSessionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<!-- 配置以后，需要在类路径中增加struts.xml文件 -->
 	<filter>
 		<filter-name>struts</filter-name>

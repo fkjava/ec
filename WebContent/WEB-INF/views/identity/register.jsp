@@ -23,15 +23,25 @@
   <body>
 		<jsp:include page="/WEB-INF/views/commons/before.jsp"></jsp:include>
 		<div class="row">
-			<form action="${ctx }/identity/register" method="post"
+			<form action="${ctx }/identity/register.action" method="post"
 				class="form-horizontal register-form">
+				<div class="form-group">
+					<label for="inputName" class="col-sm-3 control-label">姓名</label>
+					<div class="col-sm-9">
+						<input type="text" 
+							class="form-control" 
+							id="inputName" 
+							name="user.name"
+							placeholder="姓名"/>
+					</div>
+				</div>
 				<div class="form-group">
 					<label for="inputLoginName" class="col-sm-3 control-label">登录名</label>
 					<div class="col-sm-9">
 						<input type="text" 
 							class="form-control" 
 							id="inputLoginName" 
-							name="loginName"
+							name="user.loginName"
 							placeholder="登录名"/>
 					</div>
 				</div>
@@ -41,7 +51,7 @@
 						<input type="text" 
 							class="form-control" 
 							id="inputEmail" 
-							name="email"
+							name="user.email"
 							placeholder="用于激活和找回密码的邮箱地址"/>
 					</div>
 				</div>
@@ -51,7 +61,7 @@
 						<input type="text" 
 							class="form-control" 
 							id="inputPassword" 
-							name="password"
+							name="user.password"
 							placeholder="登录密码，必须有字母、数字、下划线"
 							required="required"
 							pattern="[\w\d_]{6,15}"/>
