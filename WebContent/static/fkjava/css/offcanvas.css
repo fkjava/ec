@@ -63,3 +63,18 @@ footer {
 	padding: 15px;
 	margin: 0 auto;
 }
+/**
+使用了 > 表示只匹配下一级元素。没有>并且有空格表示所有子元素都匹配。
+*/
+.input-group-addon>img {
+	margin-top: -5px;
+	margin-bottom: -5px;
+	margin-left: -10px;
+	margin-right: -10px;
+	height: 30px;
+}
+
+.input-group-addon>img.validate-code-image
+{
+	cursor: pointer;
+}

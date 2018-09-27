@@ -31,4 +31,21 @@ public class IdentityServiceImpl implements IdentityService {
 		// TODO 3.保存以后，要发送激活邮件
 	}
 
+	@Override
+	public User login(String loginName, String password) {
+		UserMapper userDao = MapperFactory.getMapper(UserMapper.class);
+		// 1.要根据登录名查找User对象
+		User user = userDao.findByLoginName(loginName);
+		// 2.判断User对象是否为空
+		if (user == null) {
+			return null;
+		} else {
+			// 3.如果不为空则判断密码是否匹配
+			if (user.getPassword().equals(password)) {
+				return user;
+			} else {
+				return null;
+			}
+		}
+	}
 }

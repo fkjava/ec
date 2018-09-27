@@ -42,7 +42,9 @@ public class RegisterAction extends ActionSupport {
 		Map<String, Object> session = ActionContext.getContext().getSession();
 
 		session.put("title", "注册成功");
-		session.put("message", "恭喜你注册成功，请登录" + user.getEmail() + "邮箱接收激活邮件，完成激活以后才可以正常登录使用！");
+		session.put("message", "恭喜你注册成功，请登录" //
+				+ user.getEmail() //
+				+ "邮箱接收激活邮件，完成激活以后才可以正常登录使用！");
 
 		return SUCCESS;
 	}

@@ -17,6 +17,22 @@
 		</action>
 	</package>
 
+	<package name="commons" namespace="/commons" extends="default">
+		<action name="validateCode"
+			class="org.fkjava.ec.commons.action.ValidateCodeAction">
+			<!-- 先执行execute方法，返回success，然后调用getRandomCode()方法得到InputStream -->
+			<result name="success" type="stream">
+				<param name="contentType">image/png</param>
+				<!-- 调用getRandomCode()方法获取图片内容 -->
+				<param name="inputName">randomCode</param>
+				<!-- 文件下载一般需要contentDisposition，图片验证码可以不要 -->
+				<!-- <param name="contentDisposition">attachment;filename="code.png"</param> -->
+				<!-- 缓冲区大小 -->
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+	</package>
+
 	<package name="identity" namespace="/identity"
 		extends="default">
 
@@ -32,6 +48,35 @@
 				<param name="namespace">/</param>
 				<param name="actionName">prompt</param>
 			</result>
+		</action>
+
+		<!-- 登录表单 -->
+		<action name="loginForm">
+			<result>/WEB-INF/views/identity/login.jsp</result>
+		</action>
+		<action name="login"
+			class="org.fkjava.ec.identity.action.LoginAction">
+			<!-- 如果想要到另外一个Action，需要通过chain类型 -->
+			<!-- 如果想要到一个JSP，通过默认(dispatcher)类型 -->
+			<!-- <result name="input" type="chain"> -->
+			<!-- <param name="actionName">loginForm</param> -->
+			<!-- </result> -->
+			<result name="input" type="redirectAction">
+				<param name="actionName">loginForm</param>
+			</result>
+			<!-- 重定向到另外一个URL -->
+			<result name="success" type="redirect">
+				<param name="location">/</param>
+			</result>
+		</action>
+	</package>
+
+	<!-- 电子商务的主要面向客户的界面都在下面这个包 -->
+	<package name="commerce" namespace="/commerce"
+		extends="default">
+		<action name="index"
+			class="org.fkjava.ec.commerce.action.IndexAction">
+			<result>/WEB-INF/views/commerce/index.jsp</result>
 		</action>
 	</package>
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="fk" uri="http://fkjava.org/jsp/jstl/fk" %>
+<%-- 引入自定义标签库 --%>
+<%@ taglib prefix="fk" uri="/WEB-INF/fkjava.tld" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -12,7 +13,7 @@
     <meta name="author" content="">
     <link rel="icon" href="${ctx }/static/fkjava/images/logo.png">
 
-    <title>欢迎注册新用户</title>
+    <title>用户登录</title>
 
     <!-- Bootstrap core CSS -->
     <link href="${ctx }/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -24,27 +25,16 @@
   <body>
 		<jsp:include page="/WEB-INF/views/commons/before.jsp"></jsp:include>
 		<div class="row">
-			<form action="${ctx }/identity/register.action" method="post"
+			<form action="${ctx }/identity/login.action" method="post"
 				class="form-horizontal register-form">
-
 				<c:if test="${not empty sessionScope.message }">
 					<div class="alert alert-danger" role="alert">${sessionScope.message }</div>
 				</c:if>
 				<c:remove var="message" scope="session"/>
-				
-				<div class="form-group">
-					<label for="inputName" class="col-sm-3 control-label">姓名</label>
-					<div class="col-sm-9">
-						<input type="text" 
-							class="form-control" 
-							id="inputName" 
-							name="user.name"
-							value="${ not empty sessionScope.allParams ? sessionScope.allParams['user.name'][0] : param['user.name'] }"
-							placeholder="姓名"/>
-					</div>
-				</div>
 				<div class="form-group">
 					<label for="inputLoginName" class="col-sm-3 control-label">登录名</label>
+					<%-- 使用[]和使用.都可以获取对象里面的属性 --%>
+					<%-- value="${param['user.loginName'] }" --%>
 					<div class="col-sm-9">
 						<input type="text" 
 							class="form-control" 
@@ -55,20 +45,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputEmail" class="col-sm-3 control-label">电子邮箱</label>
-					<div class="col-sm-9">
-						<input type="text" 
-							class="form-control" 
-							id="inputEmail" 
-							name="user.email"
-							value="${ not empty sessionScope.allParams ? sessionScope.allParams['user.email'][0] : param['user.email'] }"
-							placeholder="用于激活和找回密码的邮箱地址"/>
-					</div>
-				</div>
-				<div class="form-group">
 					<label for="inputPassword" class="col-sm-3 control-label">登录密码</label>
 					<div class="col-sm-9">
-						<input type="text" 
+						<input type="password" 
 							class="form-control" 
 							id="inputPassword" 
 							name="user.password"
@@ -77,14 +56,13 @@
 							pattern="[\w\d_]{6,15}"/>
 					</div>
 				</div>
-
+				<%-- 使用自定义的标签 --%>
 				<fk:validateCode/>
-				
 				<div class="col-md-offset-3 col-sm-4">
-					<button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+					<button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
 				</div>
 				<div class="col-sm-4">
-					<a class="btn btn-lg btn-default btn-block" href="${ctx }/identity/loginForm.action">登录</a>
+					<a class="btn btn-lg btn-default btn-block" href="${ctx }/identity/registerForm.action">注册</a>
 				</div>
 			</form>
 		</div><!--/row-->
