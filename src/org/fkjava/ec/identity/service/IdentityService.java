@@ -8,4 +8,6 @@ public interface IdentityService {
 
 	User login(String loginName, String password);
 
+	boolean active(String code);
+
 }

@@ -69,6 +69,20 @@
 				<param name="location">/</param>
 			</result>
 		</action>
+
+		<!-- 激活账户 -->
+		<action name="active"
+			class="org.fkjava.ec.identity.action.ActiveAction">
+			<!-- 激活失败到提示页面 -->
+			<result name="input" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">prompt</param>
+			</result>
+			<!-- 激活成功到登录页面 -->
+			<result name="success" type="redirectAction">
+				<param name="actionName">loginForm</param>
+			</result>
+		</action>
 	</package>
 
 	<!-- 电子商务的主要面向客户的界面都在下面这个包 -->
