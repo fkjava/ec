@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fkjava.ec.commerce.mapper.ArticleDao">
+
+	<resultMap type="org.fkjava.ec.commerce.domain.Article"
+		id="articleMap">
+		<result column="putaway_date" property="putawayDate" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="findCondition">
+		from ec_article
+		<where>
+			<if test="typeCode != null">
+				TYPE_CODE like #{typeCode}
+			</if>
+			<if test="keyword != null">
+				and TITLE like #{keyword}
+			</if>
+		</where>
+	</sql>
+
+	<select id="countByTypeCodeAndKeyWord" resultType="int">
+		select
+		count(*)
+		<!-- 包含一个sql标签的值进来，提高SQL语句重用度 -->
+		<include refid="findCondition"></include>
+	</select>
+	<select id="findByTypeCodeAndKeyWord" resultMap="articleMap">
+		select *
+		<include refid="findCondition"></include>
+		<!-- 使用page.offset其实是调用page.getOffset()方法 -->
+		limit #{page.offset}, #{page.pageSize}
+	</select>
+</mapper>

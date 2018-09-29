@@ -1,5 +1,7 @@
 package org.fkjava.ec.commons;
 
+import org.fkjava.ec.commerce.service.CommerceService;
+import org.fkjava.ec.commerce.service.impl.CommerceServiceImpl;
 import org.fkjava.ec.commons.service.EmailService;
 import org.fkjava.ec.commons.service.impl.EmailServiceSMTP;
 import org.fkjava.ec.identity.service.IdentityService;
@@ -13,6 +15,8 @@ public class ServiceFactory {
 	static final private EmailService emailService = new EmailServiceSMTP();
 
 	private static final IdentityService IDENTITY_SERVICE = new IdentityServiceImpl();
+	
+	private static final CommerceService COMMERCE_SERVICE = new CommerceServiceImpl();
 
 	public static EmailService getEmailService() {
 		return emailService;
@@ -20,5 +24,9 @@ public class ServiceFactory {
 
 	public static IdentityService getIdentityService() {
 		return IDENTITY_SERVICE;
+	}
+
+	public static CommerceService getCommerceService() {
+		return COMMERCE_SERVICE;
 	}
 }
