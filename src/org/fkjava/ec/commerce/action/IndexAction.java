@@ -30,7 +30,7 @@ public class IndexAction extends ActionSupport {
 		}
 
 		// 设置每页读取12条记录
-		page.setPageSize(12);
+		page.setPageSize(6);
 
 		// 调用业务逻辑层查询数据
 		CommerceService commerceService = ServiceFactory.getCommerceService();

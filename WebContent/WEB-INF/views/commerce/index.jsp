@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fk" uri="http://fkjava.org/jsp/jstl/fk" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -18,6 +19,7 @@
 
     <!-- Custom styles for this template -->
     <link href="${ctx }/static/fkjava/css/offcanvas.css" rel="stylesheet">
+    <link href="${ctx }/static/fkjava/css/commerce.css" rel="stylesheet">
   </head>
 
   <body>
@@ -34,36 +36,29 @@
 		          <img style="width: 50%" src="${ctx }/static/fkjava/images/map.png"/>
           		</div> --%>
           		<div class="row">
+          			<%-- data-开头的属性，是HTML 5里面新增的属性，用于给开发者自定义属性的 --%>
+          			<%-- data-id希望把id存储在div里面，点击div的时候把id获取出来，并且根据id获取商品的详情 --%>
           			<c:forEach items="${page.articles }" var="a">
-		            <div class="col-xs-6 col-lg-4">
-						<h2>${a.title }</h2>
-						<p>${a.description }</p>
-						<p><a class="btn btn-default" href="index.html#" role="button">按钮</a></p>
+		            <div class="col-xs-6 col-lg-4 article-item" title="${a.title }" data-id="${a.id }">
+		            	<div>
+		            		<img src="${ctx }/static/fkjava/images/article/${a.image}"/>
+		            	</div>
+						<p class="aticle-title">${a.title }</p>
+						<p>
+							<span class="price">
+								￥${a.price }
+							</span>
+							<span class="discount-price">
+								<b>￥${ empty a.discount ? a.price : a.price * a.discount }</b>
+							</span>
+							<a class="btn btn-default add-to-cart">加入购物车</a>
+							<a class="btn btn-default add-to-collection">收藏</a>
+						</p>
 		            </div><!--/.col-xs-6.col-lg-4-->
 		            </c:forEach>
 	            </div>
-	            <div class="row" style="text-align: center;">
-	            	<%-- 分页按钮 --%>
-					<nav aria-label="Page navigation">
-					    <ul class="pagination">
-					        <li>
-					            <a href="#" aria-label="Previous">
-					                <span aria-hidden="true">&laquo;</span>
-					            </a>
-					        </li>
-					        <li><a href="#">1</a></li>
-					        <li><a href="#">2</a></li>
-					        <li><a href="#">3</a></li>
-					        <li><a href="#">4</a></li>
-					        <li><a href="#">5</a></li>
-					        <li>
-					            <a href="#" aria-label="Next">
-					                <span aria-hidden="true">&raquo;</span>
-					            </a>
-					        </li>
-					    </ul>
-					</nav>
-	            </div>
+	            <fk:pager url="${ctx }/commerce/index.action"/>
+	            number: ${page.number }
 			</div>
 			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
 				<div class="list-group">
@@ -75,5 +70,6 @@
 			</div><!--/.sidebar-offcanvas-->
 		</div><!--/row-->
 		<jsp:include page="/WEB-INF/views/commons/after.jsp"></jsp:include>
+		<script type="text/javascript" src="${ctx }/static/fkjava/js/commerce.js" charset="UTF-8"></script>
   </body>
 </html>

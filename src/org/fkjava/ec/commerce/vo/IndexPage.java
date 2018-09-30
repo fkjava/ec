@@ -41,7 +41,7 @@ public class IndexPage {
 //			this.totalPages++;
 //		}
 
-		this.totalPages = (this.totalRows % this.pageSize != 0)//
+		this.totalPages = (this.totalRows % this.pageSize == 0)//
 				? (this.totalRows / this.pageSize)//
 				: (this.totalRows / this.pageSize + 1);
 

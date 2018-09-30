@@ -36,5 +36,17 @@
 		<!-- <rtexprvalue>false</rtexprvalue> -->
 		<!-- </attribute> -->
 	</tag>
+	
+	<tag>
+		<name>pager</name>
+		<tag-class>org.fkjava.ec.commons.tag.PagerTag</tag-class>
+		<body-content>EMPTY</body-content>
+		<attribute>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
 
 </taglib>

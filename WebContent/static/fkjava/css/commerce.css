@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+.article-item
+{
+	height: 300px;
+	border: 1px solid #fff;
+	cursor: pointer;
+}
+.article-item img
+{
+	height: 200px;
+}
+.article-item:hover
+{
+	border: 1px solid #eee;
+}
+
+.article-item .aticle-title
+{
+	height: 40px;
+	overflow: hidden;
+}
+
+.article-item .price
+{
+	text-decoration: line-through;
+}
+.article-item .discount-price
+{
+	color: red;
+}
