@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
     <!-- Fixed navbar -->
 	<nav class="navbar navbar-default navbar-fixed-top">
 	    <div class="container">
@@ -26,9 +25,15 @@
 	                <li><a href="index.html#contact">招贤纳士</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
-	                <li><a href="${ctx }/identity/loginForm.action">登录</a></li>
-	                <li><a href="${ctx }/identity/registerForm.action">注册</a></li>
-	                <li><a href="#">购物车</a></li>
+	            	<c:if test="${not empty sessionScope.user }">
+	            		<li><a href="${ctx }/identity/profile.action">${sessionScope.user.name }</a></li>
+	            		<li><a href="${ctx }/identity/logout.action">退出</a></li>
+	            	</c:if>
+	            	<c:if test="${empty sessionScope.user }">
+		                <li><a href="${ctx }/identity/loginForm.action">登录</a></li>
+		                <li><a href="${ctx }/identity/registerForm.action">注册</a></li>
+	                </c:if>
+	                <li><a href="${ctx }/commerce/showCart.action">购物车</a></li>
 	                <li><a href="#">订单</a></li>
 	            </ul>
 	        </div><!--/.nav-collapse -->

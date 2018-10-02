@@ -88,9 +88,37 @@
 	<!-- 电子商务的主要面向客户的界面都在下面这个包 -->
 	<package name="commerce" namespace="/commerce"
 		extends="default">
+
+		<interceptors>
+			<interceptor name="shoppingCart"
+				class="org.fkjava.ec.commerce.interceptor.CheckingShoppingCartInterceptor"></interceptor>
+			<interceptor-stack name="cart">
+				<interceptor-ref name="defaultStack" />
+				<!-- 检查购物车的拦截器放到其他拦截器之后 -->
+				<interceptor-ref name="shoppingCart" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="cart"></default-interceptor-ref>
+
 		<action name="index"
 			class="org.fkjava.ec.commerce.action.IndexAction">
 			<result>/WEB-INF/views/commerce/index.jsp</result>
+		</action>
+
+		<action name="detail"
+			class="org.fkjava.ec.commerce.action.DetailAction">
+			<result>/WEB-INF/views/commerce/detail.jsp</result>
+		</action>
+
+		<!-- 添加商品到购物车 -->
+		<action name="addToCart"
+			class="org.fkjava.ec.commerce.action.ShoppingCartAction" method="add">
+			<result name="success" type="redirectAction">
+				<param name="actionName">showCart</param>
+			</result>
+		</action>
+		<action name="showCart">
+			<result>/WEB-INF/views/commerce/cart.jsp</result>
 		</action>
 	</package>
 

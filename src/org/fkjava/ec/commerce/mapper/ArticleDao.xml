@@ -19,18 +19,18 @@
 				TYPE_CODE like #{typeCode}
 			</if>
 			<if test="keyword != null">
-				and TITLE like #{keyword}
+				and (TITLE like #{keyword} or DESCRIPTION like #{keyword})
 			</if>
 		</where>
 	</sql>
 
-	<select id="countByTypeCodeAndKeyWord" resultType="int">
+	<select id="countByTypeCodeAndKeyWordLike" resultType="int">
 		select
 		count(*)
 		<!-- 包含一个sql标签的值进来，提高SQL语句重用度 -->
 		<include refid="findCondition"></include>
 	</select>
-	<select id="findByTypeCodeAndKeyWord" resultMap="articleMap">
+	<select id="findByTypeCodeAndKeyWordLike" resultMap="articleMap">
 		select *
 		<include refid="findCondition"></include>
 		<!-- 使用page.offset其实是调用page.getOffset()方法 -->

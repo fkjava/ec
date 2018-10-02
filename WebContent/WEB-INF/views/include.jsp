@@ -3,3 +3,7 @@
 <%-- 用于统一的包含，而且配置在web.xml自动包含 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath }" scope="application"></c:set>
+<%-- 声明一个js变量，全局有效的 --%>
+<script type="text/javascript">
+var contextPath = "${ctx}";
+</script>

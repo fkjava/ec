@@ -20,6 +20,11 @@ public class Article {
 	// 是否禁用、下架
 	private boolean disabled;
 
+	// 计算折扣价
+	public Double getDiscountPrice() {
+		return discount == null ? price : price * discount;
+	}
+
 	public Integer getId() {
 		return id;
 	}

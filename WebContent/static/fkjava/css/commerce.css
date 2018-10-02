@@ -6,7 +6,7 @@
 	border: 1px solid #fff;
 	cursor: pointer;
 }
-.article-item img
+.article-item img, .article-detail img
 {
 	height: 200px;
 }
@@ -21,11 +21,34 @@
 	overflow: hidden;
 }
 
-.article-item .price
+.article-item .price, .article-detail .price
 {
 	text-decoration: line-through;
 }
-.article-item .discount-price
+.article-item .discount-price, .article-detail .discount-price
 {
 	color: red;
 }
+
+.search-form .input-group-addon
+{
+	padding: 0;
+}
+
+.search-form .input-group-addon .btn
+{
+	border: 0px;
+}
+
+@media (max-width: 767px){
+	.search-form .types
+	{
+		display: none;
+	}
+}
+
+.article-detail .buy-number
+{
+	width: 40px;
+}
+

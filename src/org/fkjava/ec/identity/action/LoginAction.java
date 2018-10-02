@@ -34,8 +34,11 @@ public class LoginAction extends ActionSupport {
 			// 如果通过getSession()来put，那么就是放入Session。
 			// ActionContext.getContext().put("message", "登录名或者密码错误！");
 			ActionContext.getContext().getSession().put("message", "登录名或者密码错误！");
-			ActionContext.getContext().getSession().put("user", user);
+			//ActionContext.getContext().getSession().put("user", user);
 			return INPUT;
+		} else {
+			// 把User设置到Session里面
+			ActionContext.getContext().getSession().put("user", user);
 		}
 		return SUCCESS;
 	}
