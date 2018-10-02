@@ -33,4 +33,19 @@ public class ShoppingCartAction extends ActionSupport {
 
 		return SUCCESS;
 	}
+
+	public String update() {
+		CommerceService commerceService = ServiceFactory.getCommerceService();
+		commerceService.updateCart(id, number);
+
+		return SUCCESS;
+	}
+
+	public String delete() {
+
+		CommerceService commerceService = ServiceFactory.getCommerceService();
+		commerceService.deleteCart(id);
+
+		return SUCCESS;
+	}
 }

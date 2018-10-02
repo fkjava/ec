@@ -1,61 +1,118 @@
 // $(function(){}); 初始化的函数
 // 所有在里面声明的变量、函数都局部有效
-$(function(){
+$(function() {
 	// 绑定商品记录的点击事件，找到的所有元素都会绑定相同的事件
 	// click里面的函数，就是元素onclick干的事情
-	$(".article-item").click(function(){
+	$(".article-item").click(function() {
 		// 1.获取id的值，this表示点击哪个函数
 		var id = $(this).attr("data-id");
 		// 2.把页面转向到详情页面
-		document.location.href= "./commerce/detail.action?id=" + id;
+		document.location.href = "./commerce/detail.action?id=" + id;
 	});
-	
+
 	// 加入购物车的按钮
-	$(".article-item .add-to-cart").click(function(event){
-		// 阻止事件冒泡，避免被上面的div（外层的div）触发点击事件
-		
-		// 取消元素的默认动作，比如a标签的href属性的动作
-		//event.preventDefault();
-		// 取消事件继续传递、避免事件冒泡
-		event.stopPropagation();
-		
-		var id = $(this).parent().parent().attr("data-id");
-		// 如果登录了，加入购物车会把数据记录到数据库，下次登录可以肯定之前加入购物车的数据。
-		// 如果没有登录，那么重新访问网页的时候，购物车数据就被清空。
-		document.location.href= contextPath + "/commerce/addToCart.action?number=1&id=" + id;
-	});
+	$(".article-item .add-to-cart").click(
+			function(event) {
+				// 阻止事件冒泡，避免被上面的div（外层的div）触发点击事件
+
+				// 取消元素的默认动作，比如a标签的href属性的动作
+				// event.preventDefault();
+				// 取消事件继续传递、避免事件冒泡
+				event.stopPropagation();
+
+				var id = $(this).parent().parent().attr("data-id");
+				// 如果登录了，加入购物车会把数据记录到数据库，下次登录可以肯定之前加入购物车的数据。
+				// 如果没有登录，那么重新访问网页的时候，购物车数据就被清空。
+				document.location.href = contextPath
+						+ "/commerce/addToCart.action?number=1&id=" + id;
+			});
 	// 收藏按钮
-	$(".article-item .add-to-collection, .article-detail .add-to-collection").click(function(event){
-		event.stopPropagation();
-		var id = $(this).parent().parent().attr("data-id");
-		document.location.href= contextPath + "/commerce/user/collect.action?id=" + id;
+	$(".article-item .add-to-collection, .article-detail .add-to-collection")
+			.click(
+					function(event) {
+						event.stopPropagation();
+						var id = $(this).parent().parent().attr("data-id");
+						document.location.href = contextPath
+								+ "/commerce/user/collect.action?id=" + id;
+					});
+
+	// 购物车的数量数据库的事件绑定
+	$(".item-number input").keydown(function() {
+		inputBuyNumber(event);
 	});
+	// 修改后的数量，要更新到Session里面购物车中
+	$(".item-number input").keyup(
+			function() {
+				// input的id，有item_开头
+				var id = $(this).attr("id");
+				id = id.substring(5);
+
+				// 获取修改后的值
+				var number = $(this).val();
+				// 这里应该使用AJAX方式访问服务器，AJAX是异步的HTTP请求，不会刷新页面
+				// 现在还没有学习AJAX，所以直接刷新页面
+				document.location.href = contextPath
+						+ "/commerce/updateNumber.action?number=" + number
+						+ "&id=" + id;
+			});
+
+	$(".item-number .glyphicon-menu-up").click(
+			function() {
+				var id = $(this).attr("id");
+				id = id.substring(10);
+
+				// 获取输入框的值
+				var number = $("#item_" + id).val();
+				number++;
+				// $("#item_" + id).val(number);
+
+				document.location.href = contextPath
+						+ "/commerce/updateNumber.action?number=" + number
+						+ "&id=" + id;
+			});
+	$(".item-number .glyphicon-menu-down").click(
+			function() {
+				var id = $(this).attr("id");
+				id = id.substring(12);
+
+				// 获取输入框的值
+				var number = $("#item_" + id).val();
+				number--;
+				if (number < 1) {
+					number = 1;
+				}
+				// $("#item_" + id).val(number);
+
+				document.location.href = contextPath
+						+ "/commerce/updateNumber.action?number=" + number
+						+ "&id=" + id;
+			});
 });
 
 // 声明全局函数，才能被HTML的元素调用到
 // onkeydown : 当键盘按下的时候
-var inputBuyNumber = function(event){
-	
+var inputBuyNumber = function(event) {
+
 	// 获取键盘的输入字符
-	var keyCode = event.keyCode;//ASCII码
-	var key = event.key;//输入的字符
-	
+	var keyCode = event.keyCode;// ASCII码
+	var key = event.key;// 输入的字符
+
 	// 使用==的时候JS会自动进行数据类型转换
 	// 使用===的时候不会进行类型转换
 	// 123 == "123" 返回true
 	// 123 === "123" 返回false
-	if(keyCode === 8 || keyCode === 116){
+	if (keyCode === 8 || keyCode === 116) {
 		// 退格键、F5键不要处理
 		return;
 	}
 
 	// 取消事件的默认动作，字符不会进入输入框
 	event.preventDefault();
-	
-	if( keyCode >= 48 && keyCode <= 57 ){
+
+	if (keyCode >= 48 && keyCode <= 57) {
 		// 数字范围的才是需要的
 		// 把输入的字符放入文本框
-		//  $(this) this表示触发事件的对象（元素），$(this)把元素包装成jQuery对象
+		// $(this) this表示触发事件的对象（元素），$(this)把元素包装成jQuery对象
 		// .val()用于获取文本框的值，如果有参数则是设置文本框的值。
 		// event.target就是触发事件的对象，使用this不行的时候可以改为event.target。
 		var value = $(event.target).val();
@@ -64,5 +121,3 @@ var inputBuyNumber = function(event){
 		$(event.target).val(value);
 	}
 };
-
-

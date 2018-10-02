@@ -1,54 +1,75 @@
 @charset "UTF-8";
 
-.article-item
-{
+.article-item {
 	height: 300px;
 	border: 1px solid #fff;
 	cursor: pointer;
 }
-.article-item img, .article-detail img
-{
+
+.article-item img, .article-detail img {
 	height: 200px;
 }
-.article-item:hover
-{
+
+.article-item:hover {
 	border: 1px solid #eee;
 }
 
-.article-item .aticle-title
-{
+.article-item .aticle-title {
 	height: 40px;
 	overflow: hidden;
 }
 
-.article-item .price, .article-detail .price
-{
+.article-item .price, .article-detail .price {
 	text-decoration: line-through;
 }
-.article-item .discount-price, .article-detail .discount-price
-{
+
+.article-item .discount-price, .article-detail .discount-price {
 	color: red;
 }
 
-.search-form .input-group-addon
-{
+.search-form .input-group-addon {
 	padding: 0;
 }
 
-.search-form .input-group-addon .btn
-{
+.search-form .input-group-addon .btn {
 	border: 0px;
 }
 
-@media (max-width: 767px){
-	.search-form .types
-	{
+@media ( max-width : 767px) {
+	.search-form .types {
 		display: none;
 	}
 }
 
-.article-detail .buy-number
-{
+.article-detail .buy-number {
 	width: 40px;
+}
+
+.input-group-addon.number-buttons {
+	padding: 0;
+}
+
+/**
+购物车的数字加减按钮
+*/
+.number-buttons span {
+	display: table;
+	cursor: pointer;
+}
+
+.number-buttons span:hover {
+	background-color: #fff;
+}
+
+.number-buttons span:last-child {
+	border-top: 1px solid #000;
+}
+
+.cart-item {
+	border-bottom: 1px solid #ccc;
+}
+
+.cart-item:hover {
+	background-color: #eee;
 }
 

@@ -7,6 +7,9 @@ public class ShoppingCartItem {
 	// 购买多少件
 	private Integer number;
 
+	public Double getSum() {
+		return this.number * this.article.getDiscountPrice();
+	}
 	public Article getArticle() {
 		return article;
 	}

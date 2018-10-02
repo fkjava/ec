@@ -127,4 +127,33 @@ public class CommerceServiceImpl implements CommerceService {
 	public void removeShoppingCart() {
 		THREAD_LOCAL_CART.remove();
 	}
+
+	@Override
+	public void updateCart(Integer id, int number) {
+		ShoppingCart cart = this.getShoppingCart();
+		// 1.判断购物车里面是否有id对应的商品
+		ShoppingCartItem item = cart.getItem(id);
+		if (item == null) {
+			// 2.如果没有对应的商品，需要根据id从数据库把商品查询出来
+			ArticleDao articleDao = MapperFactory.getMapper(ArticleDao.class);
+			Article article = articleDao.findById(String.valueOf(id));
+
+			// 3.把商品和购买的数量，封装成一个对象（ShoppingCartItem）
+			// ShoppingCart是一个购物车，ShoppingCartItem表示购物车里面的一种商品（包括商品、购买数量）
+			item = new ShoppingCartItem();
+			item.setArticle(article);
+			item.setNumber(number);
+
+			cart.addItem(id, item);
+		} else {
+			// 4.修改数量
+			item.setNumber(number);
+		}
+	}
+	
+	@Override
+	public void deleteCart(Integer id) {
+		ShoppingCart cart = this.getShoppingCart();
+		cart.delete(id);
+	}
 }

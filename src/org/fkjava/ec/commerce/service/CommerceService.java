@@ -19,4 +19,8 @@ public interface CommerceService {
 
 	void removeShoppingCart();
 
+	void updateCart(Integer id, int number);
+
+	void deleteCart(Integer id);
+
 }

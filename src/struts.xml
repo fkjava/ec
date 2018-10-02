@@ -120,6 +120,22 @@
 		<action name="showCart">
 			<result>/WEB-INF/views/commerce/cart.jsp</result>
 		</action>
+
+		<action name="updateNumber"
+			class="org.fkjava.ec.commerce.action.ShoppingCartAction"
+			method="update">
+			<result name="success" type="redirectAction">
+				<param name="actionName">showCart</param>
+			</result>
+		</action>
+
+		<action name="deleteCart"
+			class="org.fkjava.ec.commerce.action.ShoppingCartAction"
+			method="delete">
+			<result name="success" type="redirectAction">
+				<param name="actionName">showCart</param>
+			</result>
+		</action>
 	</package>
 
 </struts>
