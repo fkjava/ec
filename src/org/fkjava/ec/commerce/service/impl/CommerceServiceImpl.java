@@ -1,18 +1,27 @@
 package org.fkjava.ec.commerce.service.impl;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import org.fkjava.ec.commerce.domain.Article;
 import org.fkjava.ec.commerce.domain.ArticleType;
+import org.fkjava.ec.commerce.domain.Order;
+import org.fkjava.ec.commerce.domain.OrderItem;
 import org.fkjava.ec.commerce.domain.ShoppingCart;
 import org.fkjava.ec.commerce.domain.ShoppingCartItem;
 import org.fkjava.ec.commerce.mapper.ArticleDao;
 import org.fkjava.ec.commerce.mapper.ArticleTypeDao;
+import org.fkjava.ec.commerce.mapper.OrderMapper;
 import org.fkjava.ec.commerce.service.CommerceService;
 import org.fkjava.ec.commerce.vo.DetailPage;
 import org.fkjava.ec.commerce.vo.IndexPage;
 import org.fkjava.ec.commons.MapperFactory;
 import org.fkjava.ec.commons.ServiceFactory;
+import org.fkjava.ec.identity.domain.User;
 
 public class CommerceServiceImpl implements CommerceService {
 
@@ -79,7 +88,7 @@ public class CommerceServiceImpl implements CommerceService {
 	public DetailPage getDetailPage(String id) {
 		// 1.商品详情，目前只考虑查询一个Article对象
 		ArticleDao articleDao = MapperFactory.getMapper(ArticleDao.class);
-		Article article = articleDao.findById(id);
+		Article article = articleDao.findById(Integer.parseInt(id));
 
 		// 扩展：商品的类型、购买记录、评论记录、相关性商品（推荐）、同类型商品
 
@@ -97,7 +106,7 @@ public class CommerceServiceImpl implements CommerceService {
 		if (item == null) {
 			// 2.如果没有对应的商品，需要根据id从数据库把商品查询出来
 			ArticleDao articleDao = MapperFactory.getMapper(ArticleDao.class);
-			Article article = articleDao.findById(String.valueOf(id));
+			Article article = articleDao.findById(id);
 
 			// 3.把商品和购买的数量，封装成一个对象（ShoppingCartItem）
 			// ShoppingCart是一个购物车，ShoppingCartItem表示购物车里面的一种商品（包括商品、购买数量）
@@ -136,7 +145,7 @@ public class CommerceServiceImpl implements CommerceService {
 		if (item == null) {
 			// 2.如果没有对应的商品，需要根据id从数据库把商品查询出来
 			ArticleDao articleDao = MapperFactory.getMapper(ArticleDao.class);
-			Article article = articleDao.findById(String.valueOf(id));
+			Article article = articleDao.findById(id);
 
 			// 3.把商品和购买的数量，封装成一个对象（ShoppingCartItem）
 			// ShoppingCart是一个购物车，ShoppingCartItem表示购物车里面的一种商品（包括商品、购买数量）
@@ -150,10 +159,54 @@ public class CommerceServiceImpl implements CommerceService {
 			item.setNumber(number);
 		}
 	}
-	
+
 	@Override
 	public void deleteCart(Integer id) {
 		ShoppingCart cart = this.getShoppingCart();
 		cart.delete(id);
+	}
+
+	@Override
+	public void submitOrder(User user) {
+		// 获取购物车以后，在购物车里面就有很多的购物明细
+		// 这些购物车里面的信息，就需要创建一个订单对象以及订单明细对象
+		ShoppingCart cart = this.getShoppingCart();
+
+		Order order = new Order();
+		order.setOrderStatus("新订单");
+		order.setOrderTime(new Date());
+		order.setUser(user);// 哪个用户的订单
+		order.setItems(new LinkedList<>());
+
+		// 一般不同的企业，都会有不同的订单号生成规则
+		// 这里选择最简单的生成方式：时间+随机数
+		Random random = new Random();
+		int randomNumber = random.nextInt(10000);// 0~9999
+		NumberFormat format = new DecimalFormat("0000");// 不够4位数的时候补零
+		String orderCode = System.currentTimeMillis() + "" + format.format(randomNumber);
+		order.setOrderCode(orderCode);
+
+		// 把购物车里面的信息，放入订单里面
+		cart.getItems().forEach((id, item) -> {
+			OrderItem oi = new OrderItem();
+			oi.setArticle(item.getArticle());
+			oi.setNumber(item.getNumber());
+
+			// 注意：Order和OrderItem是一对多关系
+			// 所以在保存订单明细的时候，必须要有订单的主键值作为外键使用
+			oi.setOrder(order);
+			order.getItems().add(oi);
+		});
+
+		// 保存订单，并且把自动生成的主键值设置给Order对象
+		// 主键值用于在保存订单明细的时候作为外键使用
+		OrderMapper orderMapper = MapperFactory.getMapper(OrderMapper.class);
+		orderMapper.save(order);
+
+//		OrderItemMapper orderItemMapper = MapperFactory.getMapper(OrderItemMapper.class);
+//		// 保存订单明细
+//		order.getItems().forEach(oi -> {
+//			orderItemMapper.save(oi);
+//		});
 	}
 }

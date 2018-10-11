@@ -87,6 +87,150 @@ $(function() {
 						+ "/commerce/updateNumber.action?number=" + number
 						+ "&id=" + id;
 			});
+
+	// 下拉列表的级联操作，现在这些数据是模拟的，以后需要通过AJAX从服务器实时读取
+	var addressData = [ {
+		name : "广东省",// 省级
+		cities : [ {
+			name : "广州市",// 市级
+			districts : [ {
+				name : "天河区",// 区级
+				street : [ {
+					name : "车陂街"// 街道
+				}, {
+					name : "前进街道"
+				}, {
+					name : "棠德街道"
+				}, {
+					name : "华景街道"
+				}, {
+					name : "石牌街道"
+				} ]
+			}, {
+				name : "白云区"
+			}, {
+				name : "越秀区"
+			}, {
+				name : "海珠区",
+				street : [ {
+					name : "东晓街道"
+				}, {
+					name : "西晓街道"
+				}, {
+					name : "街道1"
+				}, {
+					name : "街道2"
+				}, {
+					name : "街道3"
+				} ]
+			}, {
+				name : "番禺区"
+			}, {
+				name : "荔湾区"
+			}, {
+				name : "黄浦区"
+			}, {
+				name : "从化区"
+			}, {
+				name : "南沙区"
+			}, {
+				name : "花都区"
+			} ]
+		}, {
+			name : "深圳市",
+			districts: [
+				{name:"罗湖区"},
+				{name:"福田区"},
+				{name:"南山区"}
+			]
+		}, {
+			name : "梅州市"
+		} ]
+	}, {
+		name : "湖南省",
+		cities : [ {
+			name : "长沙市"
+		}, {
+			name : "郴州市"
+		}, {
+			name : "岳阳市"
+		} ]
+	}, {
+		name : "海南省"
+	}, {
+		name : "台湾省"
+	} ];
+	
+	// 把数组里面的数据生成下拉列表的选项
+	var generateOptions = function( data, targetId){
+		if(!data){
+			return;
+		}
+		for(var i = 0; i < data.length; i ++){
+			var x = data[i];
+			// var html = "<option value='" + province.name + "'>" +
+			// province.name +
+			// "</option>";
+			
+			// 使用数字键1左边的引号
+			// ECMA Script 2015的规范，可以使用表达式获取对象的值，也能够换行
+			// ${}表达式不能放到JSP里面，只能在js文件里面
+			var html = `<option value='${x.name}'>
+	    ${x.name}
+	</option>`;
+			// console.log(html);
+			
+			// 把html字符串转换为一个元素，并且追加到#selectProvince对象里面
+			$(html).appendTo( $(targetId) );
+		}
+	};
+	// 初始化选择省的下拉框里面的内容
+	generateOptions(addressData, "#selectProvince");
+	
+	// 绑定选择省份的事件
+	$("#selectProvince").change(function(){
+		// 获取当前选择的option的值
+		var value = $(this).val();
+		// console.log(value);
+		
+		// 清空【选择城市】的下拉列表里面的所有option
+		$("#selectCity").html("<option value=''>-- 选择城市 --</option>");
+		
+		// 把对应省里面的城市加入【选择城市】的下拉列表
+		var cities = [];
+		for( var i = 0; i < addressData.length; i++ ){
+			var p = addressData[i];
+			// 当省份的名字相同，获取对应的城市
+			if(p.name === value){
+				cities = p.cities;
+				break;
+			}
+		}
+		generateOptions(cities, "#selectCity");
+	});
+	
+	// 绑定选择城市的事件
+	$("#selectCity").change(function(){
+		var provinceName = $("#selectProvince").val();
+		var cityName = $(this).val();
+		$("#selectDistrict").html("<option value=''>-- 选择区/县 --</option>");
+		
+		ALL:
+		for( var i = 0; i < addressData.length; i++ ){
+			var p = addressData[i];
+			// 当省份的名字相同，获取对应的城市
+			if(p.name === provinceName){
+				// 省份相同以后，再匹配城市
+				for( var j = 0; j < p.cities.length; j++){
+					// 匹配到城市以后，把街道获取、生成下拉列表
+					if(p.cities[j].name === cityName){
+						generateOptions(p.cities[j].districts, "#selectDistrict");
+						break ALL;
+					}
+				}
+			}
+		}
+	});
 });
 
 // 声明全局函数，才能被HTML的元素调用到

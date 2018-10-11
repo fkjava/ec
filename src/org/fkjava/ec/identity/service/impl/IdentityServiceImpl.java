@@ -103,7 +103,8 @@ public class IdentityServiceImpl implements IdentityService {
 		} else {
 			// 3.如果找到则把账户的激活码去掉，表示激活成功
 			user.setActiveCode(null);
-			userDao.update(user);
+			//userDao.update(user);
+			userDao.save(user);
 			return true;
 		}
 	}

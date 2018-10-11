@@ -34,7 +34,7 @@
 		                <li><a href="${ctx }/identity/registerForm.action">注册</a></li>
 	                </c:if>
 	                <li><a href="${ctx }/commerce/showCart.action">购物车</a></li>
-	                <li><a href="#">订单</a></li>
+	                <li><a href="${ctx }/commerce/user/listOrder.action">订单</a></li>
 	            </ul>
 	        </div><!--/.nav-collapse -->
 	    </div>

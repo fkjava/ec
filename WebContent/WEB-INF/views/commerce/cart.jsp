@@ -74,6 +74,7 @@
 		</div><!--/row-->
 		<div class="row" style="text-align: right;">
 			<span>总计: <fmt:formatNumber value="${sessionScope['CommerceService.shoppingCart'].sum }" pattern="#,####.00"/></span>
+			<a href="${ctx }/commerce/user/confirm.action" class="btn btn-primary">确认订单</a>
 		</div>
 		</c:if>
 		<c:if test="${empty sessionScope['CommerceService.shoppingCart'].items }">

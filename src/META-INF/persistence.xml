@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<!-- 可以配置多个持久化单元，往往对应不同的数据库。 -->
+	<!-- 一个持久化单元往往对应一个数据库或者一系列表。 -->
+	<persistence-unit name="jpa-01">
+		<!-- 指定JPA的实现框架 -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+		<!-- 指定实体类（domain包里面的类） -->
+		<!-- 如果不指定，并且exclude-unlisted-classes为false，那么会自动搜索所有@Entity注解的类 -->
+		<!-- <class>org.hibernate.documentation.userguide.Document</class> -->
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+		<!-- 共享缓存模式 -->
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+
+		<!-- JPA实现框架需要使用的属性 -->
+		<properties>
+			<!-- 数据库驱动 -->
+			<property name="javax.persistence.jdbc.driver"
+				value="com.mysql.jdbc.Driver" />
+			<!-- 连接数据库的URL -->
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://127.0.0.1:3306/ec_1805?useSSL=false" />
+			<!-- 数据库用户名 -->
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<!-- 数据库密码 -->
+			<property name="javax.persistence.jdbc.password"
+				value="1234" />
+
+			<!-- Hibernate专有属性，所有的Hibernate的专有属性，都可以在【project/etc/hibernate.properties】文件中找到 -->
+			<!-- hibernate.show_sql为true会打印自动生成的SQL语句 -->
+			<property name="hibernate.show_sql" value="false" />
+			<!-- hibernate.hbm2ddl.auto，DDL（数据定义语言、建表或者改表的语句），如果为update，会自动更新数据库表 -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<!-- hibernate.dialect是Hibernate针对不同的数据库特性的抽象，叫做【方言】 -->
+			<!-- 通过方言，Hibernate实现了【所有数据库】看起来都是一样的 -->
+			<!-- MyBatis很麻烦，比如不同的数据库分页方式不同 -->
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.MySQL57Dialect" />
+
+			<!-- 增加缓存的配置，这些缓存的配置，也可以放到hibernate.properties文件，存储在src目录下 -->
+			<property name="hibernate.cache.region_prefix"
+				value="fkjava" />
+			<property name="hibernate.cache.use_second_level_cache"
+				value="true" />
+			<property name="hibernate.cache.region.factory_class"
+				value="org.hibernate.cache.ehcache.internal.SingletonEhcacheRegionFactory" />
+			<!-- 激活查询缓存 -->
+			<property name="hibernate.cache.use_query_cache"
+				value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>

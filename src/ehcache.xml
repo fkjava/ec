@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+
+	<!-- 表示缓存文件的存储位置，java.io.tmpdir是系统运行时产生的一个临时目录 -->
+	<!-- 通常在Windows里面通常放到【C:\Users\用户名\AppData\temp】 -->
+	<!-- 非Windows基本上都是在【/tmp】 -->
+	<!-- <diskStore path="D:/hibernate/cache"/> -->
+	<diskStore path="java.io.tmpdir" />
+
+	<!-- 默认缓存分区，如果@Entity里面没有指定分区的时候都存储在默认缓存分区里面 -->
+	<!-- maxElementsInMemory在内存里面最多存储多少个对象 -->
+	<!-- eternal如果为true，表示数据永远放在缓存里面，不会驱逐。除非删除对象。 -->
+	<!-- timeToIdleSeconds当对象空闲多少秒以后，把对象驱逐出去，不要放在缓存 -->
+	<!-- timeToLiveSeconds对象可以在缓存中存储多长时间 -->
+	<!-- overflowToDisk当内存里面的对象的数量，超过maxElementsInMemory的时候，是否把数据写入硬盘 -->
+	<!-- name缓存的分区的名称，defaultCache没有name -->
+	<defaultCache maxElementsInMemory="10000" eternal="false"
+		timeToIdleSeconds="60" timeToLiveSeconds="120" overflowToDisk="true" />
+
+	<!-- 指定了分区的名字 -->
+	<!-- <cache name="sampleCache1" -->
+	<!-- maxElementsInMemory="10000" -->
+	<!-- eternal="false" -->
+	<!-- timeToIdleSeconds="300" -->
+	<!-- timeToLiveSeconds="600" -->
+	<!-- overflowToDisk="true" /> -->
+</ehcache>

@@ -8,6 +8,16 @@
 <struts>
 
 	<package name="default" extends="struts-default">
+
+
+		<!-- 配置全局的结果，用于在登录状态检查的拦截器中，发现还未登录的时候重定向到登录页面 -->
+		<global-results>
+			<result type="redirectAction" name="redirectToLoginForm">
+				<param name="namespace">/identity</param>
+				<param name="actionName">loginForm</param>
+			</result>
+		</global-results>
+
 		<!-- <action name="hello" class="org.fkjava.ec.commons.action.HelloAction"> -->
 		<!-- <result>/WEB-INF/views/hello.jsp</result> -->
 		<!-- </action> -->
@@ -135,6 +145,42 @@
 			<result name="success" type="redirectAction">
 				<param name="actionName">showCart</param>
 			</result>
+		</action>
+	</package>
+	<package name="commerce.user" namespace="/commerce/user"
+		extends="default">
+
+		<interceptors>
+			<interceptor name="shoppingCart"
+				class="org.fkjava.ec.commerce.interceptor.CheckingShoppingCartInterceptor"></interceptor>
+			<interceptor name="checkingLogin"
+				class="org.fkjava.ec.commerce.interceptor.CheckingLoginStatusIntercetor"></interceptor>
+			<interceptor-stack name="cart">
+				<interceptor-ref name="defaultStack" />
+				<!-- 检查购物车的拦截器放到其他拦截器之后 -->
+				<interceptor-ref name="checkingLogin" />
+				<interceptor-ref name="shoppingCart" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="cart"></default-interceptor-ref>
+
+		<!-- 选购 -> 购物车 -> 确认订单 -> 提交订单 -> 支付 -> 坐等收货 -->
+		<!-- 确认订单一般要把用户信息、默认收货地址、默认支付方式查询出来 -->
+		<!-- 由于现在是模拟的，所以不考虑收货地址和支付方式，只是显示表单出来 -->
+		<action name="confirm">
+			<result>/WEB-INF/views/commerce/user/confirm.jsp</result>
+		</action>
+
+		<action name="submitOrder"
+			class="org.fkjava.ec.commerce.action.OrderAction" method="submit">
+			<result name="success" type="redirectAction">
+				<!-- 重定向到我的订单 -->
+				<param name="actionName">listOrder</param>
+			</result>
+		</action>
+		<action name="listOrder"
+			class="org.fkjava.ec.commerce.action.OrderAction" method="listOrder">
+			<result>/WEB-INF/views/commerce/user/listOrder.jsp</result>
 		</action>
 	</package>
 

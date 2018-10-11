@@ -2,8 +2,21 @@ package org.fkjava.ec.commerce.domain;
 
 import java.util.Date;
 
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ec_article")
+@Cacheable
 public class Article {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String title;
 	private String supplier;
@@ -19,6 +32,9 @@ public class Article {
 	private String description;
 	// 是否禁用、下架
 	private boolean disabled;
+
+	@Column(name = "type_code")
+	private String typeCode;
 
 	// 计算折扣价
 	public Double getDiscountPrice() {
@@ -111,5 +127,13 @@ public class Article {
 
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
+	}
+
+	public String getTypeCode() {
+		return typeCode;
+	}
+
+	public void setTypeCode(String typeCode) {
+		this.typeCode = typeCode;
 	}
 }
