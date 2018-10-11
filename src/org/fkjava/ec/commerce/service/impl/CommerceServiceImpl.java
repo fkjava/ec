@@ -21,6 +21,8 @@ import org.fkjava.ec.commerce.vo.DetailPage;
 import org.fkjava.ec.commerce.vo.IndexPage;
 import org.fkjava.ec.commons.MapperFactory;
 import org.fkjava.ec.commons.ServiceFactory;
+import org.fkjava.ec.commons.domain.Page;
+import org.fkjava.ec.commons.domain.Pageable;
 import org.fkjava.ec.identity.domain.User;
 
 public class CommerceServiceImpl implements CommerceService {
@@ -208,5 +210,14 @@ public class CommerceServiceImpl implements CommerceService {
 //		order.getItems().forEach(oi -> {
 //			orderItemMapper.save(oi);
 //		});
+
+		// 清空购物车
+		cart.getItems().clear();
+	}
+
+	@Override
+	public Page<Order> findOrders(User user, Pageable pageable) {
+		OrderMapper orderMapper = MapperFactory.getMapper(OrderMapper.class);
+		return null;
 	}
 }

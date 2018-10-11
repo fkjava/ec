@@ -13,16 +13,16 @@
 	                <span class="icon-bar"></span>
 	                <span class="icon-bar"></span>
 	            </button>
-	            <a class="navbar-brand" href="${ctx }/">
+	            <a class="navbar-brand" href="${ctx }/about.jsp">
 	            	<img src="${ctx }/static/fkjava/images/logo.png"/>小牛直销电商
 	            </a>
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	            <ul class="nav navbar-nav">
 	                <li><a href="${ctx }/">首页</a></li>
-	                <li><a href="index.html#about">关于</a></li>
-	                <li><a href="index.html#contact">联系我们</a></li>
-	                <li><a href="index.html#contact">招贤纳士</a></li>
+	                <li><a href="${ctx }/about.jsp">关于</a></li>
+	                <li><a href="http://www.fkjava.org">联系我们</a></li>
+	                <li><a href="http://www.fkit.org">招贤纳士</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
 	            	<c:if test="${not empty sessionScope.user }">

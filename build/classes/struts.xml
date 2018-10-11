@@ -7,9 +7,7 @@
 <!-- START SNIPPET: xworkSample -->
 <struts>
 
-	<package name="default" extends="struts-default">
-
-
+	<package name="default" extends="json-default">
 		<!-- 配置全局的结果，用于在登录状态检查的拦截器中，发现还未登录的时候重定向到登录页面 -->
 		<global-results>
 			<result type="redirectAction" name="redirectToLoginForm">
@@ -25,6 +23,22 @@
 		<action name="prompt">
 			<result>/WEB-INF/views/prompt.jsp</result>
 		</action>
+	</package>
+
+	<package name="user" extends="default">
+		<interceptors>
+			<interceptor name="shoppingCart"
+				class="org.fkjava.ec.commerce.interceptor.CheckingShoppingCartInterceptor"></interceptor>
+			<interceptor name="checkingLogin"
+				class="org.fkjava.ec.commerce.interceptor.CheckingLoginStatusIntercetor"></interceptor>
+			<interceptor-stack name="cart">
+				<interceptor-ref name="defaultStack" />
+				<!-- 检查购物车的拦截器放到其他拦截器之后 -->
+				<interceptor-ref name="checkingLogin" />
+				<interceptor-ref name="shoppingCart" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="cart"></default-interceptor-ref>
 	</package>
 
 	<package name="commons" namespace="/commons" extends="default">
@@ -114,10 +128,18 @@
 			class="org.fkjava.ec.commerce.action.IndexAction">
 			<result>/WEB-INF/views/commerce/index.jsp</result>
 		</action>
+		<action name="indexJson"
+			class="org.fkjava.ec.commerce.action.IndexAction">
+			<result type="json"></result>
+		</action>
 
 		<action name="detail"
 			class="org.fkjava.ec.commerce.action.DetailAction">
 			<result>/WEB-INF/views/commerce/detail.jsp</result>
+		</action>
+		<action name="detailJson"
+			class="org.fkjava.ec.commerce.action.DetailAction">
+			<result type="json"></result>
 		</action>
 
 		<!-- 添加商品到购物车 -->
@@ -127,8 +149,17 @@
 				<param name="actionName">showCart</param>
 			</result>
 		</action>
+		<action name="addToCartJson"
+			class="org.fkjava.ec.commerce.action.ShoppingCartAction" method="add">
+			<result name="success" type="json">
+			</result>
+		</action>
 		<action name="showCart">
 			<result>/WEB-INF/views/commerce/cart.jsp</result>
+		</action>
+		<action name="showCartJson"
+			class="org.fkjava.ec.commerce.action.ShowCartAction">
+			<result name="success" type="json"></result>
 		</action>
 
 		<action name="updateNumber"
@@ -136,6 +167,12 @@
 			method="update">
 			<result name="success" type="redirectAction">
 				<param name="actionName">showCart</param>
+			</result>
+		</action>
+		<action name="updateNumberJson"
+			class="org.fkjava.ec.commerce.action.ShoppingCartAction"
+			method="update">
+			<result name="success" type="json">
 			</result>
 		</action>
 
@@ -146,23 +183,15 @@
 				<param name="actionName">showCart</param>
 			</result>
 		</action>
+		<action name="deleteCartJson"
+			class="org.fkjava.ec.commerce.action.ShoppingCartAction"
+			method="delete">
+			<result name="success" type="json">
+			</result>
+		</action>
 	</package>
 	<package name="commerce.user" namespace="/commerce/user"
-		extends="default">
-
-		<interceptors>
-			<interceptor name="shoppingCart"
-				class="org.fkjava.ec.commerce.interceptor.CheckingShoppingCartInterceptor"></interceptor>
-			<interceptor name="checkingLogin"
-				class="org.fkjava.ec.commerce.interceptor.CheckingLoginStatusIntercetor"></interceptor>
-			<interceptor-stack name="cart">
-				<interceptor-ref name="defaultStack" />
-				<!-- 检查购物车的拦截器放到其他拦截器之后 -->
-				<interceptor-ref name="checkingLogin" />
-				<interceptor-ref name="shoppingCart" />
-			</interceptor-stack>
-		</interceptors>
-		<default-interceptor-ref name="cart"></default-interceptor-ref>
+		extends="user">
 
 		<!-- 选购 -> 购物车 -> 确认订单 -> 提交订单 -> 支付 -> 坐等收货 -->
 		<!-- 确认订单一般要把用户信息、默认收货地址、默认支付方式查询出来 -->

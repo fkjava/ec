@@ -1,8 +1,11 @@
 package org.fkjava.ec.commerce.service;
 
+import org.fkjava.ec.commerce.domain.Order;
 import org.fkjava.ec.commerce.domain.ShoppingCart;
 import org.fkjava.ec.commerce.vo.DetailPage;
 import org.fkjava.ec.commerce.vo.IndexPage;
+import org.fkjava.ec.commons.domain.Page;
+import org.fkjava.ec.commons.domain.Pageable;
 import org.fkjava.ec.identity.domain.User;
 
 public interface CommerceService {
@@ -16,6 +19,8 @@ public interface CommerceService {
 
 	void addToCart(Integer id, int number);
 
+	public ShoppingCart getShoppingCart();
+
 	void setShoppingCart(ShoppingCart cart);
 
 	void removeShoppingCart();
@@ -25,5 +30,7 @@ public interface CommerceService {
 	void deleteCart(Integer id);
 
 	void submitOrder(User user);
+
+	Page<Order> findOrders(User user, Pageable pageable);
 
 }

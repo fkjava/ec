@@ -1,7 +1,10 @@
 package org.fkjava.ec.commerce.action;
 
+import org.fkjava.ec.commerce.domain.Order;
 import org.fkjava.ec.commerce.service.CommerceService;
 import org.fkjava.ec.commons.ServiceFactory;
+import org.fkjava.ec.commons.domain.Page;
+import org.fkjava.ec.commons.domain.Pageable;
 import org.fkjava.ec.identity.domain.User;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -13,6 +16,8 @@ public class OrderAction extends ActionSupport {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	// 页码
+	private int number;
 
 	public String submit() {
 
@@ -29,7 +34,19 @@ public class OrderAction extends ActionSupport {
 	}
 
 	public String listOrder() {
+		CommerceService commerceService = ServiceFactory.getCommerceService();
+		User user = (User) ActionContext.getContext().getSession().get("user");
+
+		Pageable pageable = new Pageable();
+		pageable.setNumber(number);
+		pageable.setSize(10);
+		Page<Order> page = commerceService.findOrders(user, pageable);
+		ActionContext.getContext().put("page", page);
 		return SUCCESS;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 }
