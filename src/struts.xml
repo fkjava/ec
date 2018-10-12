@@ -73,6 +73,11 @@
 				<param name="actionName">prompt</param>
 			</result>
 		</action>
+		<action name="registerJson"
+			class="org.fkjava.ec.identity.action.RegisterAction">
+			<result type="json">
+			</result>
+		</action>
 
 		<!-- 登录表单 -->
 		<action name="loginForm">
@@ -94,6 +99,14 @@
 			</result>
 		</action>
 
+		<action name="loginJson"
+			class="org.fkjava.ec.identity.action.LoginAction">
+			<result name="input" type="json">
+			</result>
+			<result name="success" type="json">
+			</result>
+		</action>
+
 		<!-- 激活账户 -->
 		<action name="active"
 			class="org.fkjava.ec.identity.action.ActiveAction">
@@ -105,6 +118,15 @@
 			<!-- 激活成功到登录页面 -->
 			<result name="success" type="redirectAction">
 				<param name="actionName">loginForm</param>
+			</result>
+		</action>
+		<action name="activeJson"
+			class="org.fkjava.ec.identity.action.ActiveAction">
+			<!-- 激活失败到提示页面 -->
+			<result name="input" type="json">
+			</result>
+			<!-- 激活成功到登录页面 -->
+			<result name="success" type="json">
 			</result>
 		</action>
 	</package>

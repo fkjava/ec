@@ -19,6 +19,8 @@ public class RegisterAction extends ActionSupport {
 	// 复合类型，必须同时具有get和set方法
 	// 页面传过来的参数，必须是【属性名.】开头的
 	private User user;
+	private String title;
+	private String message;
 
 	public User getUser() {
 		return user;
@@ -41,11 +43,21 @@ public class RegisterAction extends ActionSupport {
 		// 把注册成功的提示信息，放入Session，方便prompt.jsp显示提示信息
 		Map<String, Object> session = ActionContext.getContext().getSession();
 
-		session.put("title", "注册成功");
-		session.put("message", "恭喜你注册成功，请登录" //
+		title = "注册成功";
+		message = "恭喜你注册成功，请登录" //
 				+ user.getEmail() //
-				+ "邮箱接收激活邮件，完成激活以后才可以正常登录使用！");
+				+ "邮箱接收激活邮件，完成激活以后才可以正常登录使用！";
+		session.put("title", title);
+		session.put("message", message);
 
 		return SUCCESS;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getMessage() {
+		return message;
 	}
 }

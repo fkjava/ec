@@ -15,6 +15,7 @@ public class LoginAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
+	private String message;
 
 	public User getUser() {
 		return user;
@@ -33,13 +34,21 @@ public class LoginAction extends ActionSupport {
 			// 把名为message的对象放入request。
 			// 如果通过getSession()来put，那么就是放入Session。
 			// ActionContext.getContext().put("message", "登录名或者密码错误！");
-			ActionContext.getContext().getSession().put("message", "登录名或者密码错误！");
-			//ActionContext.getContext().getSession().put("user", user);
+			message = "登录名或者密码错误！";
+			ActionContext.getContext().getSession().put("message", message);
+
+			// ActionContext.getContext().getSession().put("user", user);
 			return INPUT;
 		} else {
 			// 把User设置到Session里面
+			message = null;
+			this.user = user;
 			ActionContext.getContext().getSession().put("user", user);
 		}
 		return SUCCESS;
+	}
+
+	public String getMessage() {
+		return message;
 	}
 }
