@@ -250,7 +250,11 @@ public abstract class GenericDaoImpl<T, ID extends Serializable> implements Gene
 		for (int i = 1, j = 0; j < objects.length; j++, i++) {
 			query.setParameter(i, objects[j]);
 		}
-		return query.getSingleResult();
+		List<T> list = query.getResultList();
+		if (list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
 	}
 
 	public List<T> findList(String ql, Class<T> clazz, Object... objects) {
